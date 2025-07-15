@@ -7,8 +7,7 @@ This project is powered by **Jekyll** and **GitHub Pages**, and anyone can contr
 
 ## 🌐 Live Site
 
-> 📍 [https://yasir13001.github.io/chatsharing](https://your-username.github.io/gpt-chat-blog)  
-(Replace with your actual GitHub Pages URL)
+> 📍 [https://yasir13001.github.io/ChatSharing/](https://yasir13001.github.io/ChatSharing/)  
 
 ---
 
