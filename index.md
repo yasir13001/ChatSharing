@@ -12,7 +12,7 @@ Welcome to the community blog!
   <li>
     <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
     <br>
-    <small>{{ post.date | date: "%Y-%m-%d" }} by {{ post.author }}</small>
+    <small>{{ post.date | date: "%Y-%m-%d" }} — {{ post.author }}</small>
   </li>
 {% endfor %}
 </ul>
