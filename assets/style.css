@@ -15,86 +15,20 @@ body {
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
 }
 
-h1, h2, h3 {
-  color: #2b2b2b;
-}
-
-a {
-  color: #007acc;
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-/* Chat styling */
-.content {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-  margin-top: 2rem;
-}
-
-.content p {
-  margin: 0;
-  padding: 0;
-}
-
 .chat-bubble {
-  max-width: 100%;
   padding: 1rem;
-  border-radius: 10px;
+  margin: 1rem 0;
+  border-radius: 12px;
   line-height: 1.5;
   white-space: pre-wrap;
 }
 
 .user {
   background-color: #e0f2ff;
-  align-self: flex-end;
-  border: 1px solid #c1e7ff;
+  border-left: 4px solid #2196f3;
 }
 
 .assistant {
-  background-color: #f3f3f3;
-  align-self: flex-start;
-  border: 1px solid #ddd;
-}
-
-
-.post-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  margin-top: 2rem;
-}
-
-.post-preview h2 {
-  margin: 0;
-  font-size: 1.3rem;
-  color: #007acc;
-}
-
-.post-preview h2 a {
-  text-decoration: none;
-  color: inherit;
-}
-
-.post-preview h2 a:hover {
-  text-decoration: underline;
-}
-
-.meta {
-  font-size: 0.9rem;
-  color: #666;
-}
-
-
-.user {
-  border-left: 4px solid #66bfff;
-}
-
-.assistant {
-  background-color: #f1f1f1;
-  border-left: 4px solid #ccc;
+  background-color: #f0f0f0;
+  border-left: 4px solid #999;
 }
