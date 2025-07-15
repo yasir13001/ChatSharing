@@ -3,10 +3,16 @@ layout: default
 title: Home
 ---
 
-# 📚 CHATSHARING
+# 🧠 GPT Chat Blog
 
-Welcome! This is a community collection of interesting ChatGPT chats turned into blog posts.
+Welcome to the community blog!
 
+<ul>
 {% for post in site.posts %}
-- [{{ post.title }}]({{ post.url }}) — {{ post.date | date: "%Y-%m-%d" }}
+  <li>
+    <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+    <br>
+    <small>{{ post.date | date: "%Y-%m-%d" }} by {{ post.author }}</small>
+  </li>
 {% endfor %}
+</ul>
