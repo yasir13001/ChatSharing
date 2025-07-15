@@ -15,5 +15,16 @@
     </div>
     <a href="{{ "/" | relative_url }}">← Back to Home</a>
   </div>
+<script>
+document.querySelectorAll('.content p').forEach(p => {
+  const text = p.innerText.trim();
+  if (text.startsWith("User:")) {
+    p.classList.add("chat-bubble", "user");
+  } else if (text.startsWith("Assistant:")) {
+    p.classList.add("chat-bubble", "assistant");
+  }
+});
+</script>
 </body>
+
 </html>

@@ -88,3 +88,13 @@ a:hover {
   font-size: 0.9rem;
   color: #666;
 }
+
+
+.user {
+  border-left: 4px solid #66bfff;
+}
+
+.assistant {
+  background-color: #f1f1f1;
+  border-left: 4px solid #ccc;
+}
