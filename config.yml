@@ -1,0 +1,11 @@
+title: Share Your Chatgpt Chat
+description: Community-contributed ChatGPT conversations
+baseurl: "" # keep empty if publishing at root
+url: "https://yasir13001.github.io" # replace with your GitHub Pages URL
+
+markdown: kramdown
+theme: minima
+
+collections:
+  posts:
+    output: true

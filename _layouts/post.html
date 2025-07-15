@@ -1,0 +1,19 @@
+<!-- _layouts/post.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{ page.title }}</title>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="{{ "/assets/style.css" | relative_url }}">
+</head>
+<body>
+  <div class="container">
+    <h1>{{ page.title }}</h1>
+    <p><em>{{ page.date }} | by {{ page.author }}</em></p>
+    <div class="content">
+      {{ content }}
+    </div>
+    <a href="{{ "/" | relative_url }}">← Back to Home</a>
+  </div>
+</body>
+</html>

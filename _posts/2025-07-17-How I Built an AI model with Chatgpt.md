@@ -1,0 +1,163 @@
+layout: post
+title: "How I Built an AI model with Chatgpt"
+date: 2025-07-15
+author: yasir13001
+tags: [chatgpt, tutorial, model, Artificial-Intelligence]
+---
+
+**User:**  
+I want to detect images from a trash can of Paper, glass, metal, plastic, and I want to classify it using an AI model recommend me a model and guide me a process to deploy it so that I will use it through its api?
+
+---
+
+**Assistant:**  
+
+### 1 — Pick a model that can both **find** and **label** recyclables
+
+For a trash‑can view you’ll often have several items in one frame, so an **object‑detection** network is a better fit than a “whole‑image” classifier.
+The current sweet spot for real‑time detectors in 2025 is **Ultralytics YOLO‑v10** (choose the *s* variant, `yolov10s`, unless you need to squeeze onto very small hardware)⁠—it’s fast, accurate and NMS‑free, with ready‑made training/export tooling and many deployment formats (TorchScript, ONNX, TensorRT, CoreML, etc.) ([docs.ultralytics.com][1], [docs.ultralytics.com][1])
+
+---
+
+### 2 — Build (or extend) a dataset
+
+| What you need                                             | Where to get it                                                                                         | Notes                                                                                                                           |
+| --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| **Images of paper, glass, metal, plastic** (plus “other”) | • \[TrashNet] 2 527 photos (6 classes) • Kaggle *Garbage Classification* • Your own phone/camera images | Shoot your own photos in the target trash‑can to capture lighting & background. Balance classes with augmentation if necessary. |
+| **Bounding‑box annotations**                              | Label by hand in Roboflow, Label‑Studio or CVAT                                                         | Four classes: `paper, glass, metal, plastic`. Optionally add `other` or `cardboard` for completeness.                           |
+
+TrashNet already covers the four materials you listed and is widely used in research ([github.com][2]).
+
+---
+
+### 3 — Train the model
+
+```bash
+# 3.1  install
+python -m pip install "ultralytics>=0.4"  # includes YOLO‑v10
+
+# 3.2  folder structure
+datasets/
+├── images              # train/val/test images
+└── labels              # YOLO txt labels
+
+# 3.3  dataset yaml (trash.yaml)
+path: datasets
+train: images/train
+val:   images/val
+names: [paper, glass, metal, plastic]
+
+# 3.4  train
+yolo detect train \
+     model=yolov10s.pt \
+     data=trash.yaml \
+     imgsz=640 \
+     epochs=150 \
+     batch=16 \
+     device=0
+```
+
+Ultralytics saves your best checkpoint to `runs/detect/train/weights/best.pt`.
+
+---
+
+### 4 — Export for inference
+
+```bash
+yolo export model=runs/detect/train/weights/best.pt format=onnx
+# others: torchscript, tensorrt, coreml …
+```
+
+The YOLO‑v10 docs list every supported export backend ([docs.ultralytics.com][1]).
+
+---
+
+### 5 — Expose an HTTP API (two common paths)
+
+| Path                              | When to choose                                                      | Steps (summary)                                                                                                                                                              |
+| --------------------------------- | ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **A. Ultralytics HUB**            | Need “zero‑ops” hosting, auto‑scaling, HTTPS & auth handled for you | 1) `yolo hub login` 2) `yolo hub push runs/detect/train/weights/best.pt` 3) In the HUB UI press **Start Endpoint**. You receive a URL + API‑KEY. ([docs.ultralytics.com][3]) |
+| **B. Self‑host FastAPI + Docker** | You already run containers on AWS/GCP/Azure/Jetson edge             | 1) Create `app.py` (below) 2) Build image 3) Deploy to ECS, Cloud Run, etc. 4) Front‑end with an API‑gateway or Traefik for TLS. ([docs.ultralytics.com][4])                 |
+
+Minimal FastAPI (CPU or GPU):
+
+```python
+# app.py
+from io import BytesIO
+from fastapi import FastAPI, File, UploadFile
+from ultralytics import YOLO
+from PIL import Image
+
+app = FastAPI()
+model = YOLO("best.pt")           # path to your exported model
+
+@app.post("/predict")
+async def predict(file: UploadFile = File(...)):
+    img = Image.open(BytesIO(await file.read()))
+    results = model(img)[0]
+    return [
+        {"cls": model.names[int(b.cls)],
+         "conf": float(b.conf),
+         "xyxy": [float(x) for x in b.xyxy[0]]}
+        for b in results.boxes
+    ]
+```
+
+`Dockerfile` (GPU build shown):
+
+```dockerfile
+FROM nvidia/cuda:12.2.0-runtime-ubuntu22.04
+WORKDIR /app
+RUN apt-get update && apt-get install -y python3-pip
+COPY requirements.txt .            # ultralytics fastapi uvicorn[standard] pillow
+RUN pip install -r requirements.txt
+COPY . .
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
+```
+
+---
+
+### 6 — Calling the API
+
+```bash
+curl -X POST http://YOUR_HOST/predict \
+     -H "accept: application/json" \
+     -H "Content-Type: multipart/form-data" \
+     -F "file=@photo.jpg"
+```
+
+Sample JSON response:
+
+```json
+[
+  {"cls":"plastic","conf":0.92,"xyxy":[34,12,180,220]},
+  {"cls":"paper","conf":0.87,"xyxy":[200,40,350,260]}
+]
+```
+
+---
+
+### 7 — Production checklist
+
+| Area            | Recommendation                                                                                                                      |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| **Accuracy**    | Use Mosaic & HSV augmentations; oversample under‑represented classes.                                                               |
+| **Latency**     | Export TensorRT or OpenVINO on GPU/CPU respectively; batch requests if camera FPS allows.                                           |
+| **Monitoring**  | Log incoming images & predictions, compute a running confusion matrix, set alerts on confidence or class distribution drift.        |
+| **Update loop** | Periodically label mis‑predictions, retrain, and roll out a new `best‑v2.pt` (Ultralytics HUB can handle versioning automatically). |
+| **Security**    | Require an API key or OAuth in FastAPI middleware; limit request size to, e.g., 5 MB.                                               |
+
+---
+
+### 8 — If classification‑only is truly enough
+
+When you are *certain* you will have **exactly one item per photo**, a light classifier such as **EfficientNet‑V2‑S** or **MobileNet‑V3‑Large** fine‑tuned on the same dataset will be simpler and smaller; you can still deploy it with the identical FastAPI + Docker pattern.
+
+---
+
+> **TL;DR** Fine‑tune **YOLO‑v10s** on a TrashNet‑plus‑custom dataset, export to ONNX/TensorRT, and serve it behind a FastAPI container (or one‑click Ultralytics HUB). You’ll get millisecond‑level inference and a clean REST/JSON interface ready for any client.
+
+[1]: https://docs.ultralytics.com/models/yolov10/ "YOLOv10: Real-Time End-to-End Object Detection - Ultralytics YOLO Docs"
+[2]: https://github.com/AgaMiko/waste-datasets-review?utm_source=chatgpt.com "List of image datasets with any kind of litter, garbage, waste and trash"
+[3]: https://docs.ultralytics.com/hub/inference-api/?utm_source=chatgpt.com "Ultralytics HUB Inference API"
+[4]: https://docs.ultralytics.com/guides/docker-quickstart/?utm_source=chatgpt.com "Docker Quickstart Guide for Ultralytics"
