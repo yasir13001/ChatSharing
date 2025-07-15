@@ -29,7 +29,7 @@ We welcome contributions! Here's how you can share your own ChatGPT conversation
    `YYYY-MM-DD-your-title.md`
 3. **Add this frontmatter** to the top of the file:
 
-   ```yaml
+ ```yaml
    ---
    layout: post
    title: "Your Chat Title"
@@ -37,7 +37,7 @@ We welcome contributions! Here's how you can share your own ChatGPT conversation
    author: your-github-username
    tags: [chatgpt, topic1, topic2]
    ---
-````
+```
 
 4. **Paste your conversation** in Markdown format below the frontmatter.
    Use bold labels to structure it clearly:
