@@ -1,11 +1,12 @@
-<!-- _layouts/post.html -->
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>{{ page.title }}</title>
   <meta charset="utf-8" />
-  <link rel="stylesheet" href="{{ "/assets/style.css" | relative_url }}">
+  <link rel="stylesheet" href="{{ " /assets/style.css" | relative_url }}">
 </head>
+
 <body>
   <div class="container">
     <h1>{{ page.title }}</h1>
@@ -13,17 +14,20 @@
     <div class="content">
       {{ content }}
     </div>
-    <a href="{{ "/" | relative_url }}">← Back to Home</a>
+    <a href="{{ " /" | relative_url }}">← Back to Home</a>
   </div>
-<script>
-document.querySelectorAll('.content p').forEach(p => {
-  const text = p.innerText.trim();
-  if (text.startsWith("User:")) {
-    p.classList.add("chat-bubble", "user");
-  } else if (text.startsWith("Assistant:")) {
-    p.classList.add("chat-bubble", "assistant");
-  }
-});
-</script>
+  <script>
+    document.querySelectorAll('.content p').forEach((p, index) => {
+      const text = p.innerText.trim();
+      if (text.startsWith("User:")) {
+        p.classList.add("chat-bubble", "user");
+        p.style.setProperty('--index', index);
+      } else if (text.startsWith("Assistant:")) {
+        p.classList.add("chat-bubble", "assistant");
+        p.style.setProperty('--index', index);
+      }
+    });
+  </script>
 </body>
+
 </html>
