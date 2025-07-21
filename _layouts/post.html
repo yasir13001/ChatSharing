@@ -1,29 +1,56 @@
-<!-- _layouts/post.html -->
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>{{ page.title }}</title>
   <meta charset="utf-8" />
-  <link rel="stylesheet" href="{{ "/assets/style.css" | relative_url }}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ " /assets/style.css" | relative_url }}">
 </head>
+
 <body>
-  <div class="container">
-    <h1>{{ page.title }}</h1>
-    <p><em>{{ page.date }} | by {{ page.author }}</em></p>
+  <div class="container py-4">
+    <h1 class="display-5 fw-bold">{{ page.title }}</h1>
+    <p class="text-muted"><em>{{ page.date }} | by {{ page.author }}</em></p>
     <div class="content">
       {{ content }}
     </div>
-    <a href="{{ "/" | relative_url }}">← Back to Home</a>
+    <a href="{{ " /" | relative_url }}" class="btn btn-outline-primary mt-3">← Back to Home</a>
   </div>
-<script>
-document.querySelectorAll('.content p').forEach(p => {
-  const text = p.innerText.trim();
-  if (text.startsWith("User:")) {
-    p.classList.add("chat-bubble", "user");
-  } else if (text.startsWith("Assistant:")) {
-    p.classList.add("chat-bubble", "assistant");
-  }
-});
-</script>
+  <script>
+    document.querySelectorAll('.content p').forEach(p => {
+      const text = p.innerText.trim();
+      const avatarPath = "{{ '/assets/images/' | relative_url }}";
+      if (text.startsWith("User:")) {
+        p.classList.add("chat-bubble", "user");
+        const img = new Image();
+        img.src = avatarPath + "hinh2.png";
+        img.alt = "User Avatar";
+        img.className = "avatar";
+        img.onload = () => {
+          p.innerHTML = img.outerHTML + p.innerHTML.replace("User:", "").trim();
+        };
+        img.onerror = () => {
+          console.log("Failed to load user-avatar.png, using placeholder");
+          p.innerHTML = `<img src="https://via.placeholder.com/40?text=User" alt="User Avatar" class="avatar">` + p.innerHTML.replace("User:", "").trim();
+        };
+      } else if (text.startsWith("Assistant:")) {
+        p.classList.add("chat-bubble", "assistant");
+        const img = new Image();
+        img.src = avatarPath + "hinh1.png";
+        img.alt = "Assistant Avatar";
+        img.className = "avatar";
+        img.onload = () => {
+          p.innerHTML = img.outerHTML + p.innerHTML.replace("Assistant:", "").trim();
+        };
+        img.onerror = () => {
+          console.log("Failed to load assistant-avatar.png, using placeholder");
+          p.innerHTML = `<img src="https://via.placeholder.com/40?text=AI" alt="Assistant Avatar" class="avatar">` + p.innerHTML.replace("Assistant:", "").trim();
+        };
+      }
+    });
+  </script>
 </body>
+
 </html>

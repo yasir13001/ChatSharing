@@ -1,10 +1,7 @@
 title: Share Your Chatgpt Chat
 description: Community-contributed ChatGPT conversations
-
-baseurl: "/ChatSharing"          # DON’T forget the leading slash, no trailing slash
+baseurl: "/ChatSharing" # Sửa lại thành "/ChatSharing", không có dấu cách
 url: "https://yasir13001.github.io/ChatSharing"
-
 permalink: /:categories/:year/:month/:day/:title.html
-
 markdown: kramdown
 theme: minima
