@@ -48,6 +48,17 @@
           console.log("Failed to load assistant-avatar.png, using placeholder");
           p.innerHTML = `<img src="https://via.placeholder.com/40?text=AI" alt="Assistant Avatar" class="avatar">` + p.innerHTML.replace("Assistant:", "").trim();
         };
+    <a href="{{ " /" | relative_url }}">← Back to Home</a>
+  </div>
+  <script>
+    document.querySelectorAll('.content p').forEach((p, index) => {
+      const text = p.innerText.trim();
+      if (text.startsWith("User:")) {
+        p.classList.add("chat-bubble", "user");
+        p.style.setProperty('--index', index);
+      } else if (text.startsWith("Assistant:")) {
+        p.classList.add("chat-bubble", "assistant");
+        p.style.setProperty('--index', index);
       }
     });
   </script>

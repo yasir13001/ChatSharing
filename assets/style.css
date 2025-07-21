@@ -9,16 +9,25 @@
   align-items: flex-start;
   /* Chuẩn bị cho ảnh ở câu 4 */
   position: relative;
+  position: relative;
+  opacity: 0;
+  animation: slideIn 0.5s ease forwards;
+  animation-delay: calc(0.1s * var(--index));
+  transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
 .user {
   background-color: #e0f2ff;
   border-left: 4px solid #2196f3;
+  margin-right: 10%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .assistant {
   background-color: #f0f0f0;
   border-left: 4px solid #999;
+  margin-left: 10%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .chat-bubble:hover {
@@ -121,5 +130,35 @@
     width: 30px;
     height: 30px;
     margin-right: 0.5rem;
+=======
+.user:hover {
+  transform: scale(1.03);
+  background-color: #b3e0ff;
+}
+
+.assistant:hover {
+  transform: scale(1.03);
+  background-color: #e0e0e0;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 600px) {
+
+  .user,
+  .assistant {
+    margin-left: 5%;
+    margin-right: 5%;
+    padding: 0.8rem;
   }
 }
