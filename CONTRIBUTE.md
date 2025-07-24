@@ -44,10 +44,6 @@ This will start the server at `http://localhost:4000`.
 
 ---
 
-Here's a sample section you can add to your `CONTRIBUTE.md` file under a heading like **"Running the Project with Docker"**:
-
----
-
 ## 🐳 Running the Project with Docker
 
 If you'd prefer not to set up the project locally with Ruby and dependencies, you can use Docker to build and run the project in a containerized environment.
