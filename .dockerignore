@@ -1,0 +1,5 @@
+.bundle
+_site
+Gemfile.lock
+*.log
+*.tmp
