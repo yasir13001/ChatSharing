@@ -1,104 +1,94 @@
-### 📄 `CONTRIBUTING.md`
 
-# 🤝 Contributing to ChatSharing
+# Contributing to ChatSharing
 
-Thank you for your interest in contributing to **ChatSharing** — a community-powered blog where people share their favorite ChatGPT conversations.
-
-This guide will help you contribute correctly and get your chats published.
+Thank you for considering contributing to this project! 🎉  
+Here are the guidelines and setup instructions to help you get started.
 
 ---
 
-## ✍️ What You Can Contribute
+## 🛠 Local Development Setup
 
-- Interesting, funny, helpful, or insightful **ChatGPT conversations**
-- Only real conversations — no fabricated ones
-- Family-friendly, respectful content only
+Follow these steps to run the project locally:
 
----
-
-## 📁 How to Submit a Chat
-
-### 1. **Fork this repository**
-
-Click the **Fork** button (top right of this page) and clone your fork to your machine:
+### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/yasir13001/ChatSharing.git
 cd ChatSharing
 ````
 
----
+### 2. Install Ruby and Bundler
 
-### 2. **Create a new file in `_posts/`**
+Ensure Ruby (>= 3.0) and Bundler are installed. If not:
 
-Use the format:
-📄 `_posts/YYYY-MM-DD-your-title.md`
-
-**Example:**
+* Install Ruby: [https://www.ruby-lang.org/en/documentation/installation/](https://www.ruby-lang.org/en/documentation/installation/)
+* Install Bundler:
 
 ```bash
-_posts/2025-07-15-funny-dog-facts.md
+gem install bundler
 ```
 
----
-
-### 3. **Add the required front matter**
-
-Each post **must start** with this front matter:
-
-```yaml
----
-layout: post
-title: "Funny Dog Facts"
-date: 2025-07-15
-author: yourgithubusername
-tags: [chatgpt, humor, dogs]
----
-```
-
-Then add your conversation content in Markdown:
-
-```markdown
-**User:**  
-Tell me a funny fact about dogs.
-
-**Assistant:**  
-Some dogs can actually smell your emotions. So if you’re sad, your dog might try to comfort you... unless it’s a Chihuahua. 😅
-```
-
----
-
-### 4. **Preview your post (optional)**
-
-If you have Ruby and Jekyll installed, run:
+### 3. Install Project Dependencies
 
 ```bash
 bundle install
+```
+
+### 4. Serve the Jekyll Site
+
+```bash
 bundle exec jekyll serve
 ```
 
-Then go to: [http://localhost:4000/ChatSharing](http://localhost:4000/ChatSharing)
+This will start the server at `http://localhost:4000`.
 
 ---
 
-### 5. **Submit a Pull Request**
+## 🚧 Contributing via Issues
 
-Push your branch and open a pull request on GitHub.
-We’ll review your post and merge it if it meets the guidelines.
-
----
-
-## ✅ Rules
-
-* No offensive, hateful, or NSFW content
-* No spam or low-effort submissions
-* Format content cleanly (bold speaker names, Markdown headings optional)
-* Keep the YAML front matter accurate
+* Check the [Issues](https://github.com/yasir13001/ChatSharing/issues) tab for open issues.
+* Comment on the issue you'd like to work on and ask to be assigned.
+* Fork the repository and make your changes in a separate branch.
+* Create a pull request once your changes are ready.
+* Don’t forget to update the `README.md` or relevant documentation.
 
 ---
 
-## 🙏 Thank You
+## 🧪 Testing Your Changes
 
-Your contributions help build an open and creative space to learn, laugh, and share how we use ChatGPT.
+* Make sure your changes don't break the existing site.
+* Style updates should be visible and functional.
+* Check the developer console for errors.
+* Always update `README.md` if your changes introduce or modify functionality.
 
-✨ Happy chatting!
+---
+
+## 🔄 Git Workflow
+
+1. Fork the repository.
+2. Create a new branch:
+
+   ```bash
+   git checkout -b your-feature-name
+   ```
+3. Make your changes and commit them:
+
+   ```bash
+   git commit -m "Add feature: [your feature here]"
+   ```
+4. Push to your fork:
+
+   ```bash
+   git push origin your-feature-name
+   ```
+5. Open a Pull Request to the `main` branch.
+
+---
+
+## 📄 Additional Notes
+
+* Please **rebase** if the main branch has moved ahead.
+* Follow [semantic commit messages](https://www.conventionalcommits.org/en/v1.0.0/) if possible.
+* For major UI changes, consider including screenshots.
+
+Thanks again for contributing! 🙌
