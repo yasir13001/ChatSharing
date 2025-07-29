@@ -1,4 +1,4 @@
-"""---
+---
 layout: post
 title: "Translated Workout Plan & Fitness Coaching (From Spanish)"
 date: 2025-07-28
@@ -63,4 +63,3 @@ Option 2 – HIIT:
 - 5 min cool-down  
 - Total: ~25-30 minutes
 
----
