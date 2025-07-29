@@ -64,15 +64,62 @@ docker run -p 4000:4000 chatsharing
 
 > This maps the container’s port 4000 to your local machine’s port 4000 so you can access the app via `http://localhost:4000`.
 
-### 🧼 Optional: Remove the Docker Image
 
-If you ever want to delete the image:
+---
+
+### ✅ Use Docker Volume to Reflect Real-Time Changes
+
+To build and run a Docker image that **reflects real-time changes from your working directory** (i.e. live development), you don't need to **rebuild** the image every time you change code. Instead, use **Docker volumes** to **mount your local directory** inside the container.
+
+#### **Linux/macOS**:
 
 ```bash
-docker rmi chatsharing
+docker run -v "$PWD":/app -w /app -p 4000:4000 --name chatsharing-dev chatsharing jekyll serve --host 0.0.0.0
 ```
 
+#### **Windows CMD**:
 
+```cmd
+docker run -v %cd%:/app -w /app -p 4000:4000 --name chatsharing-dev chatsharing jekyll serve --host 0.0.0.0
+```
+
+#### **Windows PowerShell**:
+
+```powershell
+docker run -v ${PWD}:/app -w /app -p 4000:4000 --name chatsharing-dev chatsharing jekyll serve --host 0.0.0.0
+```
+---
+
+### 🔧 Notes:
+
+* You can now stop it with:
+
+  ```bash
+  docker stop chatsharing-dev
+  ```
+* And start it again with:
+
+  ```bash
+  docker start -a chatsharing-dev
+  ```
+
+### 🔍 Explanation:
+
+| Flag                          | Description                                              |
+| ----------------------------- | -------------------------------------------------------- |
+| `--name chatsharing-dev`      |Names your container so you can easily stop/start it later.|
+| `-v "$PWD":/app`              | Mounts your current directory to `/app` in the container |
+| `-w /app`                     | Sets the working directory inside the container          |
+| `-p 4000:4000`                | Maps container's port 4000 to host's port 4000           |
+| `jekyll serve --host 0.0.0.0` | Starts Jekyll server listening for external requests     |
+
+---
+
+### 🚀 Benefits
+
+* No need to rebuild the image on every change.
+* You edit files locally, and the container uses them immediately.
+* Ideal for development.
 
 ## 🚧 Contributing via Issues
 
